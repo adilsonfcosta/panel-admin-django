@@ -1,0 +1,134 @@
+{% extends 'base/base.html' %}
+
+{% block title %}{% if user %}Editar{% else %}Novo{% endif %} Usuário - Painel Administrativo{% endblock %}
+
+{% block page_title %}{% if user %}Editar{% else %}Novo{% endif %} Usuário{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto">
+    <form method="post" class="space-y-6">
+        {% csrf_token %}
+        
+        <div class="bg-white shadow-sm rounded-lg p-6">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Informações Pessoais</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="{{ form.first_name.id_for_label }}" class="block text-base font-medium text-gray-900 mb-1">Nome</label>
+                    {{ form.first_name }}
+                    {% if form.first_name.errors %}
+                        <div class="mt-1 text-sm text-red-600">
+                            {{ form.first_name.errors.0 }}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div>
+                    <label for="{{ form.last_name.id_for_label }}" class="block text-base font-medium text-gray-900 mb-1">Sobrenome</label>
+                    {{ form.last_name }}
+                    {% if form.last_name.errors %}
+                        <div class="mt-1 text-sm text-red-600">
+                            {{ form.last_name.errors.0 }}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="mt-6">
+                <label for="{{ form.email.id_for_label }}" class="block text-base font-medium text-gray-900 mb-1">Email</label>
+                {{ form.email }}
+                {% if form.email.errors %}
+                    <div class="mt-1 text-sm text-red-600">
+                        {{ form.email.errors.0 }}
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="mt-6">
+                <label for="{{ form.username.id_for_label }}" class="block text-base font-medium text-gray-900 mb-1">Nome de usuário</label>
+                {{ form.username }}
+                {% if form.username.errors %}
+                    <div class="mt-1 text-sm text-red-600">
+                        {{ form.username.errors.0 }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="bg-white shadow-sm rounded-lg p-6">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Senha</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="{{ form.password1.id_for_label }}" class="block text-base font-medium text-gray-900 mb-1">{% if user %}Nova senha{% else %}Senha{% endif %}</label>
+                    {{ form.password1 }}
+                    {% if form.password1.errors %}
+                        <div class="mt-1 text-sm text-red-600">
+                            {{ form.password1.errors.0 }}
+                        </div>
+                    {% endif %}
+                    {% if not user %}
+                        <p class="mt-1 text-sm text-gray-500">A senha deve ter pelo menos 8 caracteres.</p>
+                    {% endif %}
+                </div>
+                
+                <div>
+                    <label for="{{ form.password2.id_for_label }}" class="block text-base font-medium text-gray-900 mb-1">Confirmar senha</label>
+                    {{ form.password2 }}
+                    {% if form.password2.errors %}
+                        <div class="mt-1 text-sm text-red-600">
+                            {{ form.password2.errors.0 }}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-white shadow-sm rounded-lg p-6">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Organização e Permissões</h3>
+            
+            <div class="mb-6">
+                <label for="{{ form.company.id_for_label }}" class="block text-base font-medium text-gray-900 mb-1">Empresa</label>
+                {{ form.company }}
+                {% if form.company.errors %}
+                    <div class="mt-1 text-sm text-red-600">
+                        {{ form.company.errors.0 }}
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="mb-6">
+                <label for="{{ form.groups.id_for_label }}" class="block text-base font-medium text-gray-900 mb-1">Grupos</label>
+                {{ form.groups }}
+                {% if form.groups.errors %}
+                    <div class="mt-1 text-sm text-red-600">
+                        {{ form.groups.errors.0 }}
+                    </div>
+                {% endif %}
+                <p class="mt-1 text-sm text-gray-500">Mantenha pressionado Ctrl (ou Cmd no Mac) para selecionar múltiplos grupos.</p>
+            </div>
+            
+            {% if user %}
+            <div class="flex items-center">
+                {{ form.is_active }}
+                <label for="{{ form.is_active.id_for_label }}" class="ml-2 block text-base text-gray-900">Usuário ativo</label>
+            </div>
+            {% if form.is_active.errors %}
+                <div class="mt-1 text-sm text-red-600">
+                    {{ form.is_active.errors.0 }}
+                </div>
+            {% endif %}
+            {% endif %}
+        </div>
+        
+        <div class="flex justify-end space-x-3">
+            <a href="{% url 'accounts:user_list' %}" class="py-2 px-4 border border-gray-300 rounded-md shadow-sm text-base font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600">
+                Cancelar
+            </a>
+            <button type="submit" class="py-2 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600">
+                Salvar
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

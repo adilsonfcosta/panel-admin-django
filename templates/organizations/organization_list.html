@@ -1,0 +1,28 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Organizações - Painel Administrativo{% endblock %}
+
+{% block page_title %}Organizações{% endblock %}
+
+{% block content %}
+<div class="mb-6 flex justify-between items-center">
+    <div class="flex-1 max-w-lg">
+        <form method="get" class="flex">
+            <input type="text" name="q" value="{{ q }}" placeholder="Buscar organizações..." class="flex-1 px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent">
+            <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-r-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600">
+                Buscar
+            </button>
+        </form>
+    </div>
+    
+    {% if perms.organizations.add_organization %}
+    <a href="{% url 'organizations:organization_create' %}" class="ml-4 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-600">
+        Adicionar Organização
+    </a>
+    {% endif %}
+</div>
+
+<div class="bg-white shadow-sm rounded-lg overflow-hidden" id="organization-list-container">
+    {% include 'organizations/partials/organization_list.html' %}
+</div>
+{% endblock %}
