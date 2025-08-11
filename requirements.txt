@@ -1,0 +1,8 @@
+Django==4.2.16
+django-htmx==1.17.3
+django-tailwind==3.8.0
+django-browser-reload==1.12.1
+django-compressor==4.4
+psycopg2-binary==2.9.9
+mysqlclient==2.2.4
+Pillow==10.4.0
