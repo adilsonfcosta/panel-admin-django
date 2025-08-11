@@ -1,0 +1,98 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Meu Perfil - Painel Administrativo{% endblock %}
+
+{% block page_title %}Meu Perfil{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto">
+    <div class="bg-white shadow-sm rounded-lg overflow-hidden">
+        <!-- Cabeçalho do Perfil -->
+        <div class="bg-blue-800 p-6 text-white">
+            <div class="flex items-center">
+                <div class="h-20 w-20 rounded-full bg-white flex items-center justify-center text-blue-800 text-2xl font-bold">
+                    {{ user.first_name|first|upper }}{{ user.last_name|first|upper }}
+                </div>
+                <div class="ml-6">
+                    <h2 class="text-2xl font-bold">{{ user.get_full_name|default:user.username }}</h2>
+                    <p class="text-blue-200">@{{ user.username }}</p>
+                    {% if user.company %}
+                    <p class="mt-1 text-blue-100">
+                        {{ user.company.name }} - {{ user.company.organization.name }}
+                    </p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Informações do Perfil -->
+        <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Informações Pessoais</h3>
+                    
+                    <div class="mb-4">
+                        <p class="text-sm text-gray-500">Nome Completo</p>
+                        <p class="text-gray-800 font-medium">{{ user.get_full_name }}</p>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <p class="text-sm text-gray-500">Nome de Usuário</p>
+                        <p class="text-gray-800 font-medium">{{ user.username }}</p>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <p class="text-sm text-gray-500">Email</p>
+                        <p class="text-gray-800 font-medium">{{ user.email }}</p>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Informações do Sistema</h3>
+                    
+                    {% if user.company %}
+                    <div class="mb-4">
+                        <p class="text-sm text-gray-500">Empresa</p>
+                        <p class="text-gray-800 font-medium">{{ user.company.name }}</p>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <p class="text-sm text-gray-500">Organização</p>
+                        <p class="text-gray-800 font-medium">{{ user.company.organization.name }}</p>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="mb-4">
+                        <p class="text-sm text-gray-500">Grupos</p>
+                        <div class="mt-1">
+                            {% for group in user.groups.all %}
+                            <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800 mr-1 mb-1">
+                                {{ group.name }}
+                            </span>
+                            {% empty %}
+                            <p class="text-gray-500 text-sm">Nenhum grupo atribuído</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <p class="text-sm text-gray-500">Status da Conta</p>
+                        <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full {% if user.is_active %}bg-green-100 text-green-800{% else %}bg-red-100 text-red-800{% endif %}">
+                            {{ user.is_active|yesno:"Ativo,Inativo" }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Ações do Perfil -->
+            <div class="mt-6 pt-6 border-t border-gray-200">
+                <div class="flex flex-wrap gap-3">
+                    <a href="{% url 'accounts:password_change' %}" class="py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        Alterar Senha
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'base/base.html' %}
+
+{% block title %}{% if group %}Editar{% else %}Novo{% endif %} Grupo - Painel Administrativo{% endblock %}
+
+{% block page_title %}{% if group %}Editar{% else %}Novo{% endif %} Grupo{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto">
+    <form method="post" class="space-y-6">
+        {% csrf_token %}
+        
+        <div class="bg-white shadow-sm rounded-lg p-6">
+            <div class="mb-6">
+                <label for="id_name" class="block text-base font-medium text-gray-900 mb-1">Nome</label>
+                <input type="text" name="name" id="id_name" value="{{ group.name|default:'' }}" 
+                       class="shadow-sm focus:ring-blue-600 focus:border-blue-600 block w-full text-base border-gray-400 rounded-md bg-white text-gray-900"
+                       required>
+            </div>
+            
+            <div class="mb-6">
+                <label for="id_permissions" class="block text-base font-medium text-gray-900 mb-1">Permissões</label>
+                <div class="border border-gray-400 rounded-md p-4 max-h-96 overflow-y-auto">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+                        {% for permission in permissions %}
+                        <div class="flex items-start">
+                            <div class="flex items-center h-6">
+                                <input type="checkbox" name="permissions" value="{{ permission.pk }}" id="permission_{{ permission.pk }}" 
+                                       {% if group and permission in group.permissions.all %}checked{% endif %}
+                                       class="h-5 w-5 text-blue-600 focus:ring-blue-600 border-gray-400 rounded">
+                            </div>
+                            <div class="ml-3 text-sm">
+                                <label for="permission_{{ permission.pk }}" class="font-medium text-gray-900">{{ permission.name }}</label>
+                                <p class="text-gray-700">{{ permission.content_type.app_label }}.{{ permission.content_type.model }}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="flex justify-end space-x-3">
+            <a href="{% url 'accounts:group_list' %}" class="py-2 px-4 border border-gray-300 rounded-md shadow-sm text-base font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600">
+                Cancelar
+            </a>
+            <button type="submit" class="py-2 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600">
+                Salvar
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

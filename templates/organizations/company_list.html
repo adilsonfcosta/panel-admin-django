@@ -1,0 +1,31 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Empresas - {{ organization.name }} - Painel Administrativo{% endblock %}
+
+{% block page_title %}Empresas - {{ organization.name }}{% endblock %}
+
+{% block content %}
+<div class="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+    <div>
+        <h2 class="text-xl font-semibold text-gray-800">Lista de Empresas</h2>
+        <p class="text-gray-600 text-sm mt-1">Organização: {{ organization.name }}</p>
+    </div>
+    
+    <div class="flex items-center gap-2">
+        <form method="get" hx-get="{% url 'organizations:company_list' org_pk=organization.pk %}" hx-target="#company-list-container" hx-swap="innerHTML" class="flex items-center gap-2">
+            <input type="text" name="q" value="{{ q }}" placeholder="Buscar por nome ou descrição" class="w-64 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <button type="submit" class="px-3 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-md">Buscar</button>
+        </form>
+        
+        {% if perms.organizations.add_company %}
+        <a href="{% url 'organizations:company_create' org_pk=organization.pk %}" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md">
+            Nova Empresa
+        </a>
+        {% endif %}
+    </div>
+</div>
+
+<div class="bg-white rounded-lg shadow overflow-hidden" id="company-list-container">
+    {% include 'organizations/partials/company_list.html' %}
+</div>
+{% endblock %}

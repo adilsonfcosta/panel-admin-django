@@ -1,0 +1,21 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Grupos - Painel Administrativo{% endblock %}
+
+{% block page_title %}Grupos{% endblock %}
+
+{% block content %}
+<div class="mb-6 flex justify-between items-center">
+    <h2 class="text-xl font-semibold text-gray-800">Lista de Grupos</h2>
+    
+    {% if perms.auth.add_group %}
+    <a href="{% url 'accounts:group_create' %}" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md">
+        Novo Grupo
+    </a>
+    {% endif %}
+</div>
+
+<div class="bg-white rounded-lg shadow overflow-hidden" id="group-list-container">
+    {% include 'accounts/partials/group_list.html' %}
+</div>
+{% endblock %}
